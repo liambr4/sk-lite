@@ -9,8 +9,7 @@ namespace api.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            // Implementation to get all users
-            return Ok();
+            return Ok(new string[] { "Name", "Another" });
         }
     }
 }
