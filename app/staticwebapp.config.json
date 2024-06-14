@@ -7,7 +7,8 @@
     },
     { 
       "route": "/forecast",
-      "serve": "/index.html"
+      "serve": "/index.html",
+      "statusCode": 200
     }
   ]
 }
