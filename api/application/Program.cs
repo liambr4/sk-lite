@@ -40,7 +40,7 @@ var app = builder.Build();
 
 app.UseCors(options =>
 		{
-			options.WithOrigins("http://localhost:5173")
+			options.WithOrigins("http://localhost:5173", "https://lb-webappw.azurewebsites.net")
 			.WithHeaders("Authorization").WithExposedHeaders("Authorization");
 		});
 Console.WriteLine(app.Environment.IsDevelopment());
