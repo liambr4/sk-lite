@@ -30,9 +30,10 @@ jobs:
           npm run build --if-present
           npm run test --if-present
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v3
         with:
-         path: .
+         name: node-app
+         path: app/dist
 
   deploy:
     runs-on: ubuntu-latest
