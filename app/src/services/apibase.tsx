@@ -3,7 +3,7 @@ import { AccountInfo, PublicClientApplication } from "@azure/msal-browser";
 import { acquireAccessToken } from "../main";
 export default class ApiClient {
   account: AccountInfo;
-  baseUrl: string = "http://localhost:5121";
+  baseUrl: string = import.meta.env.VITE_API_BASEURL;
   accessToken?: string;
   header: string;
   constructor() {

@@ -11,14 +11,8 @@ namespace api.Controllers;
 [RequiredScopeOrAppPermission(AcceptedAppPermission = ["565d0c1b-0263-44a5-9a6f-b80cadd337f3"])]
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController(ILogger<WeatherForecastController> logger, GraphServiceClient graphServiceClient) : ControllerBase
 {
-    public WeatherForecastController(GraphServiceClient graphServiceClient)
-    {
-
-        _graphServiceClient = graphServiceClient;
-    }
-    private readonly GraphServiceClient _graphServiceClient;
     private static readonly string[] Summaries =
     [
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -27,10 +21,9 @@ public class WeatherForecastController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
-        var scopes = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/scope")?.Value.Split(" ") ?? [];
-        Console.WriteLine(scopes);
-        var user = await _graphServiceClient.Me.GetAsync();
-        Console.WriteLine(user?.DisplayName);
+        var userPrincipalName = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+        var user = await graphServiceClient.Users[userPrincipalName].GetAsync();
+        logger.LogInformation(user?.DisplayName);
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
