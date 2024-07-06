@@ -23,7 +23,7 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
         var userPrincipalName = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-        var idk = await _downStreamWebApi.CallApiForUserAsync("Graph", options => { options.HttpMethod = "GET"; options.RelativePath = $"me"; });
+        var idk = await _downStreamWebApi.CallApiForAppAsync("Graph", options => { options.HttpMethod = "GET"; options.RelativePath = $"me"; });
         var user = await idk.Content.ReadFromJsonAsync<User>();
         logger.LogInformation(user.DisplayName);
         logger.LogInformation(userPrincipalName);
