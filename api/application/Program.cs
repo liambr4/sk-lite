@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
 .EnableTokenAcquisitionToCallDownstreamApi()
-// .AddDownstreamApi("MyApi", builder.Configuration.GetSection("MyApiScope"))
+.AddDownstreamApi("Graph", builder.Configuration.GetSection("Graph"))
 // .AddMicrosoftGraph(builder.Configuration.GetSection("Graph"))
 .AddInMemoryTokenCaches();
 
