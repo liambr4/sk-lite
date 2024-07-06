@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
 .EnableTokenAcquisitionToCallDownstreamApi()
-.AddMicrosoftGraph(builder.Configuration.GetSection("Graph"))
+// .AddDownstreamApi("MyApi", builder.Configuration.GetSection("MyApiScope"))
+// .AddMicrosoftGraph(builder.Configuration.GetSection("Graph"))
 .AddInMemoryTokenCaches();
 
 builder.Services.AddControllers();
@@ -20,7 +21,6 @@ app.UseCors(options =>
 			options.WithOrigins("http://localhost:5173", "https://lb-webappw.azurewebsites.net", "http://localhost:4173")
 			.WithHeaders("Authorization").WithExposedHeaders("Authorization");
 		});
-Console.WriteLine(app.Environment.IsDevelopment());
 app.UseSwagger();
 app.UseSwaggerUI();
 

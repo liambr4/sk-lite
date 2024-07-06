@@ -11,7 +11,7 @@ namespace api.controller;
 [RequiredScopeOrAppPermission(AcceptedAppPermission = ["565d0c1b-0263-44a5-9a6f-b80cadd337f3"])]
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController(ILogger<WeatherForecastController> logger, GraphServiceClient graphServiceClient) : ControllerBase
+public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
 {
     private static readonly string[] Summaries =
     [
@@ -23,8 +23,8 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     {
         var userPrincipalName = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
         logger.LogInformation(userPrincipalName);
-        var principal = await graphServiceClient.ServicePrincipals[userPrincipalName].GetAsync();
-        logger.LogInformation(principal?.DisplayName);
+        // var principal = await graphServiceClient.ServicePrincipals[userPrincipalName].GetAsync();
+        // logger.LogInformation(principal?.DisplayName);
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
