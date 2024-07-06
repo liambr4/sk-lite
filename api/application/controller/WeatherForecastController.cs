@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using Microsoft.Identity.Web.Resource;
 
-namespace api.Controllers;
+namespace api.controller;
 
 //Protected Controller
 [Authorize]
@@ -22,8 +22,9 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
         var userPrincipalName = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-        var user = await graphServiceClient.Users[userPrincipalName].GetAsync();
-        logger.LogInformation(user?.DisplayName);
+        logger.LogInformation(userPrincipalName);
+        var principal = await graphServiceClient.ServicePrincipals[userPrincipalName].GetAsync();
+        logger.LogInformation(principal?.DisplayName);
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
