@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Abstractions;
 using Microsoft.Identity.Web.Resource;
@@ -23,14 +24,12 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
         var userPrincipalName = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-        var idk = await _downStreamWebApi.CallApiForAppAsync("Graph",
+        var servicePrincipalResponse = await _downStreamWebApi.CallApiForAppAsync("Graph",
             options => { options.HttpMethod = "GET"; options.RelativePath = $"servicePrincipals/{userPrincipalName}"; }
         );
-        var user = await idk.Content.ReadFromJsonAsync<ServicePrincipal>();
+        var user = await servicePrincipalResponse.Content.ReadFromJsonAsync<ServicePrincipal>();
         logger.LogInformation(user.DisplayName);
         logger.LogInformation(userPrincipalName);
-        // var principal = await graphServiceClient.ServicePrincipals[userPrincipalName].GetAsync();
-        // logger.LogInformation(principal?.DisplayName);
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
